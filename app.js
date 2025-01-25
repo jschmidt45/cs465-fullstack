@@ -7,7 +7,13 @@ var logger = require('morgan');
 var indexRouter = require('./app_server/routes/index');
 var usersRouter = require('./app_server/routes/users');
 var travelRouter = require('./app_server/routes/travel');
+var roomsRouter = require('./app_server/routes/rooms');
 var handlebars = require('hbs');
+
+// Registers the "eq" helper to handle equality comparisons
+// Returns true when a === b.
+// https://stackoverflow.com/questions/34252817/handlebarsjs-check-if-a-string-is-equal-to-a-value
+handlebars.registerHelper('eq', (a, b) => a === b);
 
 var app = express();
 
@@ -27,6 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/travel', travelRouter);
+app.use('/rooms', roomsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
