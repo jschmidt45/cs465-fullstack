@@ -48,13 +48,20 @@ export class EditTripComponent implements OnInit {
 
         this.tripDataService.getTrip(tripCode).subscribe({
             next: (value: any) => {
-                this.trip = value;
-                this.editForm.patchValue(value[0]);
-                if (!value) {
-                    this.message = 'No Trip Retrieved!';
+                console.log('Trip API Response:', value);
+        
+                if (value && Array.isArray(value) && value.length > 0) {
+                    this.trip = value[0];
+                    this.editForm.patchValue(this.trip);
+                    this.message = `Trip: ${tripCode} retrieved`;
+                } else if (value && typeof value === 'object') {
+                    this.trip = value;
+                    this.editForm.patchValue(this.trip);
+                    this.message = `Trip: ${tripCode} retrieved`;
                 } else {
-                    this.message = 'Trip: ' + tripCode + ' retrieved';
+                    this.message = 'No Trip Retrieved!';
                 }
+        
                 console.log(this.message);
             },
             error: (error: any) => {
